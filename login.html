@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo | AlpineJs | Tailwindcss</title>
+    <script defer type="module" src="/main.js"></script>
+  </head>
+  <body
+    class="w-full h-screen bg-[url('./wood-bg.jpg')] bg-cover bg-no-repeat flex justify-center items-center"
+  >
+    <div class="lg:hidden absolute top-10 text-5xl">
+      <h1 class="uppercase">to do list</h1>
+    </div>
+    <div
+      class="lg:bg-[url('./todo-bg.webp')] flex justify-center lg:p-36 lg:w-full lg:h-screen"
+    >
+      <div class="hidden lg:block w-[25rem] h-[30rem] pr-6 pt-20">
+        <img src="./public/planner-image.jpg" alt="Planner image" />
+      </div>
+      <div
+        class="w-[80%] sm:w-[25rem] bg-white rounded-lg sm:h-[30rem] ml-2 sm:m-0 p-6 sm:pt-12"
+      >
+        <h2 class="text-3xl font-bold tracking-wide mb-12">Welcome Back!</h2>
+        <form action="./index.html">
+          <label class="font-medium text-gray-800 tracking-wider text-xl">
+            Username
+          </label>
+          <input
+            type="email"
+            class="w-[90%] my-4 p-2 rounded-md"
+            placeholder="xyz@gmail.com"
+          />
+          <label class="font-medium text-gray-800 tracking-wider text-xl">
+            Password
+          </label>
+          <input
+            type="password"
+            class="w-[90%] my-4 p-2 rounded-md"
+            placeholder="Enter Password"
+          />
+          <button
+            type="submit"
+            class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-[12rem] my-4 text-white font-semibold text-lg tracking-wider"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
