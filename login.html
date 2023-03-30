@@ -28,8 +28,8 @@
         </div>
 
         <!-- form section -->
-        <div class="w-[80%] sm:w-[25rem] bg-white rounded-lg p-6 sm:p-10">
-          <h2 class="text-lg sm:text-3xl font-bold tracking-wide mb-8">
+        <div class="w-[85%] sm:w-[25rem] bg-white rounded-lg p-6 sm:p-10">
+          <h2 class="text-lg sm:text-3xl font-bold tracking-wide mb-6 sm:mb-8">
             Welcome Back!
           </h2>
           <form
@@ -45,9 +45,10 @@
             </label>
             <input
               type="email"
-              class="w-[90%] mt-2 mb-4 p-2 rounded-md"
+              class="w-[90%] mt-2 mb-2 sm:mb-4 p-2 rounded-md"
               placeholder="xyz@gmail.com"
               x-model="username"
+              oninvalid="setCustomValidity(' ')"
             />
             <div x-show="userError" class="-mt-2 mb-2">
               <span
@@ -62,7 +63,7 @@
             </label>
             <input
               type="password"
-              class="w-[90%] mt-2 mb-4 p-2 rounded-md"
+              class="w-[90%] mt-2 mb-2 sm:mb-4 p-2 rounded-md"
               placeholder="Enter Password"
               x-model="userpass"
             />
@@ -74,12 +75,11 @@
             </div>
             <button
               type="submit"
-              class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full sm:w-[12rem] mt-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
+              class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full mt-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
               @click="submitHandler({username, userpass})"
             >
               Login
             </button>
-            <!-- </div> -->
           </form>
         </div>
       </div>
