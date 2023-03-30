@@ -29,44 +29,57 @@
 
         <!-- form section -->
         <div class="w-[80%] sm:w-[25rem] bg-white rounded-lg p-6 sm:p-10">
-          <h2 class="text-lg sm:text-3xl font-bold tracking-wide mb-12">
+          <h2 class="text-lg sm:text-3xl font-bold tracking-wide mb-8">
             Welcome Back!
           </h2>
-          <form action="" x-data="loginValidation"  x-on:submit="event.preventDefault()" >
-          <!-- <div x-data="input"> -->
+          <form
+            action=""
+            x-data="loginValidation"
+            x-on:submit="event.preventDefault()"
+          >
+            <!-- <div x-data="input"> -->
             <label
-              class="font-medium text-gray-800 tracking-wider text-base sm:text-xl"
+              class="font-medium text-gray-800 tracking-wider text-base sm:text-lg"
             >
               Username
             </label>
             <input
               type="email"
-              class="w-[90%] my-2 sm:my-4 p-2 rounded-md"
+              class="w-[90%] mt-2 mb-4 p-2 rounded-md"
               placeholder="xyz@gmail.com"
               x-model="username"
             />
+            <div x-show="userError" class="-mt-2 mb-2">
+              <span
+                x-text="userErrorMessage"
+                class="text-red-500 capitalize text-sm"
+              ></span>
+            </div>
             <label
-              class="font-medium text-gray-800 tracking-wider text-base sm:text-xl"
+              class="font-medium text-gray-800 tracking-wider text-base sm:text-lg"
             >
               Password
             </label>
             <input
               type="password"
-              class="w-[90%] my-2 sm:my-4 p-2 rounded-md"
+              class="w-[90%] mt-2 mb-4 p-2 rounded-md"
               placeholder="Enter Password"
               x-model="userpass"
             />
-            <div x-show="error">
-                <span x-text="errormessage" class="text-red-500 capitalize text-sm"></span>
+            <div x-show="passError" class="-mt-2 mb-2">
+              <span
+                x-text="passErrorMessage"
+                class="text-red-500 capitalize text-sm"
+              ></span>
             </div>
             <button
               type="submit"
-              class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full sm:w-[12rem] my-2 sm:my-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
+              class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full sm:w-[12rem] mt-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
               @click="submitHandler({username, userpass})"
             >
               Login
             </button>
-          <!-- </div> -->
+            <!-- </div> -->
           </form>
         </div>
       </div>

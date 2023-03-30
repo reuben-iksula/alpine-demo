@@ -3,57 +3,56 @@ import "./index.css";
 
 window.Alpine = Alpine;
 
-Alpine.data('loginValidation', ()=>({
-    username: '',
-    userpass: '',
-    error: false,
-    errormessage: '',
-    validemail: true,
-    validpass: true,
-    formValidate: true,
+Alpine.data("loginValidation", () => ({
+  username: "",
+  userpass: "",
+  userError: false,
+  passError: false,
+  passErrorMessage: "",
+  userErrorMessage: "",
+  formValidate: true,
 
-    checkValidate(value){
-       
-        const {username, userpass} = value;
-       
-        if(!username.includes('@')){
-            this.error = true;
-            this.errormessage = 'username should be an email address';
-            this.validemail = false;
-            return;
-        }
-        if(username){
-            console.log("VALID")
-        }
-        console.log(userpass.length)
-        if(userpass.length<6){
-            this.error = true;
-            this.errormessage =  'password length must be > 6';
-            this.validpass = false;
-            console.log("PASSWORD VALIDATION")
-            return;
-        }
-        if(username.includes('@')){
-            
-            this.errorCleanUp();
-        }
-        if(userpass.length>6){
-            console.log("VALID PASS")
-            this.errorCleanUp();
-        }
-    },
-    errorCleanUp(){
-        this.error = false;
-        this.errormessage = '';
-        this.validemail = true;
-        this.validpass = true;
-    },
-    submitHandler(value){
-       this.checkValidate(value);
-       if(this.validemail && this.validpass){
-          this.errorCleanUp();
-       }
+  checkValidate(value) {
+    const { username, userpass } = value;
+
+    if (!username.includes("@")) {
+      this.userError = true;
+      this.userErrorMessage = "Please enter a valid email";
     }
-}))
+    if (username) {
+      console.log("VALID");
+    }
+    console.log(userpass.length);
+    if (userpass.length < 8) {
+      this.passError = true;
+      this.passErrorMessage = "Password must be at least 8 characters!";
+      console.log("PASSWORD VALIDATION");
+    }
+    if (username.includes("@")) {
+      this.userErrorCleanUp();
+    }
+    if (userpass.length > 7) {
+      console.log("VALID PASS");
+      this.passErrorCleanUp();
+    }
+  },
+  userErrorCleanUp() {
+    this.userError = false;
+    this.userErrorMessage = "";
+  },
+  passErrorCleanUp() {
+    this.passError = false;
+    this.passErrorMessage = "";
+  },
+  submitHandler(value) {
+    this.checkValidate(value);
+    if (!this.userError) {
+      this.userErrorCleanUp();
+    }
+    if (!this.passError) {
+      this.passErrorCleanUp();
+    }
+  },
+}));
 
 Alpine.start();
