@@ -32,7 +32,8 @@
           <h2 class="text-lg sm:text-3xl font-bold tracking-wide mb-12">
             Welcome Back!
           </h2>
-          <form action="">
+          <form action="" x-data="loginValidation"  x-on:submit="event.preventDefault()" >
+          <!-- <div x-data="input"> -->
             <label
               class="font-medium text-gray-800 tracking-wider text-base sm:text-xl"
             >
@@ -42,6 +43,7 @@
               type="email"
               class="w-[90%] my-2 sm:my-4 p-2 rounded-md"
               placeholder="xyz@gmail.com"
+              x-model="username"
             />
             <label
               class="font-medium text-gray-800 tracking-wider text-base sm:text-xl"
@@ -52,13 +54,19 @@
               type="password"
               class="w-[90%] my-2 sm:my-4 p-2 rounded-md"
               placeholder="Enter Password"
+              x-model="userpass"
             />
+            <div x-show="error">
+                <span x-text="errormessage" class="text-red-500 capitalize text-sm"></span>
+            </div>
             <button
               type="submit"
               class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full sm:w-[12rem] my-2 sm:my-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
+              @click="submitHandler({username, userpass})"
             >
               Login
             </button>
+          <!-- </div> -->
           </form>
         </div>
       </div>
