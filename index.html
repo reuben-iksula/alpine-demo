@@ -12,21 +12,40 @@
     <div
       class="w-full flex justify-center items-center"
       x-data="router"
-      @hashchange.window="page=location.hash"
+      @hashchange.window="page=location.hash;checkAuth();"
     >
       <!-- 404 Page -->
-      <div x-show="checkRoutesFor404">404</div>
+      <div x-show="isPageUnknownStatus404">404</div>
       <!-- End 404 Page -->
 
+      <div x-show="page==='#403'">
+        Insufficient Permission<br /><button @click="location.hash='#login'">
+          Login
+        </button>
+      </div>
+      <!-- Todolist -->
+      <div
+        class="w-full flex justify-center"
+        x-show="page==='#todolist'"
+        w3-include-html="todolist.html"
+      ></div>
+
+      <!-- EndTodolist -->
+
       <!-- Login -->
-      <div x-show="page==='#login' || page===''">Login</div>
+      <div
+        class="w-full flex justify-center"
+        x-show="page==='#login' || page===''"
+        w3-include-html="login.html"
+      ></div>
+
       <!-- End Login -->
 
       <!-- TodoItem -->
       <div
-        x-show="/#todo\?id=[a-zA-Z0-9]+/.test(page)"
-        x-effect="setTodoId"
-        x-text="'todo' + todoId"
+        x-show="/#todo\?id=[a-zA-Z0-9\-]+/.test(page)"
+        x-effect="setTodoId()"
+        w3-include-html="todoitem.html"
       ></div>
       <!-- End Todo Item -->
 
@@ -35,53 +54,7 @@
       <!-- End Create Todo -->
 
       <!-- TodoList -->
-      <div
-        x-show="page==='#todolist'"
-        class="w-full m-4 p-8 max-w-6xl min-w-[35rem] h-[35rem] bg-white rounded-3xl shadow-2xl grid grid-cols-4 gap-4"
-      >
-        <!-- Sidebar -->
-        <aside class="min-w-[5rem]">
-          Sidebar<br /><a href="#login">Login</a>
-        </aside>
 
-        <!--Todo Section  -->
-        <section class="col-span-3 h-full overflow-hidden">
-          <h1 class="text-4xl mb-2">Sticky Wall</h1>
-          <div
-            class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))] auto-rows-[15rem] gap-4 overflow-y-scroll"
-          >
-            <div
-              class="bg-red-200 cursor-pointer"
-              @click="window.location.hash='todo?id=1'"
-            >
-              Click me to go to todo details
-            </div>
-            <div
-              class="bg-red-200 cursor-pointer"
-              @click="window.location.hash='create-todo'"
-            >
-              Click me to create a new todo
-            </div>
-            <div class="bg-red-200">3</div>
-            <div class="bg-red-200">4</div>
-            <div class="bg-red-200">5</div>
-            <div class="bg-red-200">6</div>
-            <div class="bg-red-200">7</div>
-
-            <div class="bg-red-200">8</div>
-            <div class="bg-red-200">9</div>
-
-            <div class="bg-red-200">10</div>
-            <div class="bg-red-200">11</div>
-
-            <div class="bg-red-200">12</div>
-            <div class="bg-red-200">13</div>
-
-            <div class="bg-red-200">14</div>
-            <div class="bg-red-200">15</div>
-          </div>
-        </section>
-      </div>
       <!-- End TodoList -->
     </div>
     <!-- End Router -->
