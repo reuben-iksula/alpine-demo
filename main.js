@@ -46,7 +46,6 @@ Alpine.data("router", () => ({
 
   checkAuth() {
     const pageIsKnown = !this.isPageUnknownStatus404();
-    console.log(this.isAuthenticated);
     if (!this.isAuthenticated && pageIsKnown && this.page !== "#login") {
       location.hash = "#403";
     }
@@ -57,8 +56,19 @@ Alpine.data("router", () => ({
     this.todoId = todoId;
   },
 
+  pageIsOnlyAHashRoute() {
+    return location.pathname === "/";
+  },
+
   isPageUnknownStatus404() {
-    let didNotFindNormalRoute = !this.routes.includes(this.page);
+    // Problem: If the url does not have a hash, this.page matches with "" because location.hash="" and didNotFindNormalRoute always becomes false. ["",...].indexOf("")=0
+
+    // The solution is to check if the pathname has some value after /
+    const pageIsNotAHashRoute = !this.pageIsOnlyAHashRoute();
+    // if we have a route like /asic then 404.
+    if (pageIsNotAHashRoute) return true;
+
+    let didNotFindNormalRoute = this.routes.indexOf(this.page) === -1;
     let didNotFindRouteWithQueryParams = !this.routesWithQueryParams.some(
       (regex) => regex.test(this.page)
     );
@@ -102,50 +112,55 @@ Alpine.data("todoitem", () => ({
 Alpine.data("loginValidation", () => ({
   username: "",
   userpass: "",
-  error: false,
-  errormessage: "",
-  validemail: true,
-  validpass: true,
+  userError: false,
+  passError: false,
+  passErrorMessage: "",
+  userErrorMessage: "",
   formValidate: true,
 
   checkValidate(value) {
     const { username, userpass } = value;
 
     if (!username.includes("@")) {
-      this.error = true;
-      this.errormessage = "username should be an email address";
-      this.validemail = false;
-      return;
+      this.userError = true;
+      this.userErrorMessage = "Please enter a valid email";
     }
     if (username) {
       console.log("VALID");
     }
     console.log(userpass.length);
-    if (userpass.length < 6) {
-      this.error = true;
-      this.errormessage = "password length must be > 6";
-      this.validpass = false;
+
+    if (userpass.length < 8) {
+      this.passError = true;
+      this.passErrorMessage = "Password must be at least 8 characters!";
       console.log("PASSWORD VALIDATION");
-      return;
     }
     if (username.includes("@")) {
-      this.errorCleanUp();
+      this.userErrorCleanUp();
     }
-    if (userpass.length > 6) {
+    if (userpass.length > 7) {
       console.log("VALID PASS");
-      this.errorCleanUp();
+      this.passErrorCleanUp();
     }
   },
-  errorCleanUp() {
-    this.error = false;
-    this.errormessage = "";
-    this.validemail = true;
-    this.validpass = true;
+  userErrorCleanUp() {
+    this.userError = false;
+    this.userErrorMessage = "";
+  },
+  passErrorCleanUp() {
+    this.passError = false;
+    this.passErrorMessage = "";
   },
   submitHandler(value) {
     this.checkValidate(value);
-    if (this.validemail && this.validpass) {
-      this.errorCleanUp();
+    if (!this.userError) {
+      this.userErrorCleanUp();
+    }
+    if (!this.passError) {
+      this.passErrorCleanUp();
+    }
+
+    if (!this.userError && !this.passError) {
       // router closure property
       this.isAuthenticated = true;
       location.hash = "#todolist";

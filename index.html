@@ -26,7 +26,7 @@
       <!-- Todolist -->
       <div
         class="w-full flex justify-center"
-        x-show="page==='#todolist'"
+        x-show="page==='#todolist' && pageIsOnlyAHashRoute()"
         w3-include-html="todolist.html"
       ></div>
 
@@ -35,7 +35,7 @@
       <!-- Login -->
       <div
         class="w-full flex justify-center"
-        x-show="page==='#login' || page===''"
+        x-show="(page==='#login'  || page==='') && pageIsOnlyAHashRoute() "
         w3-include-html="login.html"
       ></div>
 
@@ -50,7 +50,11 @@
       <!-- End Todo Item -->
 
       <!-- Create Todo -->
-      <div x-show="page==='#create-todo'">Create Todo</div>
+      <div
+        class="w-full flex justify-center"
+        x-show="page==='#create-todo' && pageIsOnlyAHashRoute()"
+        w3-include-html="todo-form.html"
+      ></div>
       <!-- End Create Todo -->
 
       <!-- TodoList -->
