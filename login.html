@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo | AlpineJs | Tailwindcss</title>
-    <script defer type="module" src="/main.js"></script>
+    <script defer type="module" src="/components/login.js"></script>
   </head>
   <body>
     <section
@@ -51,14 +51,16 @@
             </label>
             <input
               type="email"
-              class="w-[95%] mt-2 mb-2 sm:mb-4 px-2 py-1 rounded-md border-[1px] border-gray-300 text-sm sm:text-base"
+              class="w-[95%] mt-2 mb-2 sm:mb-4 px-2 py-1 rounded-md border-[1px] text-sm sm:text-base"
+              x-bind:class="usernameError? 'border-red-500': ' border-gray-300'"
               placeholder="xyz@gmail.com"
               x-model="username"
               oninvalid="setCustomValidity(' ')"
+              @keyup="usernameValidate()"
             />
-            <div x-show="userError" class="-mt-2 mb-2">
+            <div x-show="usernameError" class="-mt-2 mb-2">
               <span
-                x-text="userErrorMessage"
+                x-text="usernameErrorMessage"
                 class="text-red-500 text-sm sm:text-base"
               ></span>
             </div>
@@ -69,20 +71,22 @@
             </label>
             <input
               type="password"
-              class="w-[95%] mt-2 mb-2 sm:mb-4 px-2 py-1 rounded-md border-[1px] border-gray-300 text-sm sm:text-base"
+              class="w-[95%] mt-2 mb-2 sm:mb-4 px-2 py-1 rounded-md border-[1px] text-sm sm:text-base"
+              x-bind:class="passwordError? 'border-red-500': ' border-gray-300'"
               placeholder="Enter Password"
-              x-model="userpass"
+              x-model="password"
+              @keyup="passwordValidate()"
             />
-            <div x-show="passError" class="-mt-2 mb-2">
+            <div x-show="passwordError" class="-mt-2 mb-2">
               <span
-                x-text="passErrorMessage"
+                x-text="passwordErrorMessage"
                 class="text-red-500 text-sm sm:text-base"
               ></span>
             </div>
             <button
               type="submit"
               class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-2 w-full mt-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
-              @click="submitHandler({username, userpass})"
+              @click="submitHandler()"
             >
               Login
             </button>
