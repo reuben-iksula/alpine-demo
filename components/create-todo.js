@@ -9,27 +9,15 @@ Alpine.data("createNewTodo", () => ({
   date: null,
   titleError: false,
   descriptionError: false,
-  titleErrorMessage: "",
-  descriptionErrorMessage: "",
+  titleErrorMessage: "Title cannot be empty",
+  descriptionErrorMessage: "Description cannot be empty",
 
   validateTitle() {
-    if (this.title === "") {
-      this.titleError = true;
-      this.titleErrorMessage = "Title cannot be empty";
-    } else {
-      this.titleError = false;
-      this.titleErrorMessage = "";
-    }
+    this.titleError = this.title === "";
   },
 
   validateDescription() {
-    if (this.description === "") {
-      this.descriptionError = true;
-      this.descriptionErrorMessage = "Description cannot be empty";
-    } else {
-      this.descriptionError = false;
-      this.descriptionErrorMessage = "";
-    }
+    this.descriptionError = this.description === "";
   },
 
   clearInputs() {

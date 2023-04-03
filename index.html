@@ -5,40 +5,202 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo | AlpineJs | Tailwindcss</title>
-    <script defer type="module" src="/main.js"></script>
+    <script defer type="module" src="./components/main.js"></script>
+    <script defer type="module" src="./components/create-todo.js"></script>
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
   </head>
-  <body class="bg-zinc-700/40 w-full h-screen flex justify-center items-center">
+  <body
+    x-data
+    x-cloak
+    class="bg-[url('./wood-bg.jpg')] bg-cover bg-no-repeat w-full h-screen flex justify-center items-center"
+  >
     <div
-      class="w-full m-4 p-8 max-w-6xl min-w-[35rem] h-[35rem] bg-white rounded-3xl shadow-2xl grid grid-cols-4 gap-4"
+      x-data="todo"
+      class="w-full m-4 p-4 max-w-6xl min-w-[35rem] h-[35rem] bg-white rounded-xl shadow-2xl grid grid-cols-4 gap-4"
     >
       <!-- Sidebar -->
-      <aside class="min-w-[5rem]">Sidebar</aside>
-
-      <!--Todo Section  -->
-      <section class="col-span-3 h-full overflow-hidden">
-        <h1 class="text-4xl mb-2">Sticky Wall</h1>
+      <aside class="relative min-w-[5rem] bg-slate-700">
         <div
-          class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(15rem,_1fr))] auto-rows-[15rem] gap-4 overflow-y-scroll"
+          class="text-2xl p-2 text-white uppercase font-normal tracking-widest mb-4"
         >
-          <div class="bg-red-200">1</div>
-          <div class="bg-red-200">2</div>
-          <div class="bg-red-200">3</div>
-          <div class="bg-red-200">4</div>
-          <div class="bg-red-200">5</div>
-          <div class="bg-red-200">6</div>
-          <div class="bg-red-200">7</div>
+          Todo list
+        </div>
+        <div
+          @click="todoFormVisible=false; init()"
+          class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
+          :class="!todoFormVisible && 'bg-cyan-500'"
+        >
+          <!-- Sticky wall icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 mr-3"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+            />
+          </svg>
+          Sticky Wall
+        </div>
 
-          <div class="bg-red-200">8</div>
-          <div class="bg-red-200">9</div>
+        <div
+          @click="todoFormVisible=true"
+          class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
+          :class="todoFormVisible && 'bg-cyan-500'"
+        >
+          <!-- Create todo icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 mr-3"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+            />
+          </svg>
+          Create Todo
+        </div>
 
-          <div class="bg-red-200">10</div>
-          <div class="bg-red-200">11</div>
+        <div
+          class="absolute left-0 bottom-0 w-full p-2 pb-1 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
+        >
+          <a href="login.html" class="w-full h-full inline-flex items-center">
+            <!-- Sign out icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 mr-3"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+              />
+            </svg>
+            Sign Out</a
+          >
+        </div>
+      </aside>
 
-          <div class="bg-red-200">12</div>
-          <div class="bg-red-200">13</div>
+      <!-- Main Section -->
+      <section class="col-span-3 h-full overflow-scroll bg-rose-100 my-2">
+        <!--Sticky Wall  -->
+        <div x-show="!todoFormVisible" x-transition:enter>
+          <h2
+            class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400 mb-2"
+          >
+            Sticky Wall
+          </h2>
+          <div
+            class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(13rem,_1fr))] auto-rows-[13rem] gap-4 overflow-y-scrollp-4"
+          >
+            <!-- Displaying all the Todos  -->
+            <template
+              x-for="todo in todoData"
+              x-effect="todoData"
+              :key="$id('todo')"
+            >
+              <div
+                class="bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500"
+              >
+                <h2
+                  x-text="todo.title"
+                  class="text-xl font-medium tracking-wide p-2 capitalize"
+                ></h2>
+                <p x-text="todo.description" class="text-base p-2"></p>
+              </div>
+            </template>
+          </div>
+        </div>
 
-          <div class="bg-red-200">14</div>
-          <div class="bg-red-200">15</div>
+        <!--Create Todo form -->
+        <div x-show="todoFormVisible" x-transition:enter>
+          <h2
+            class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
+          >
+            Create your Todo!
+          </h2>
+          <div class="w-full h-full p-4">
+            <form
+              x-data="createNewTodo"
+              x-on:submit.prevent="submitHandler"
+              class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
+            >
+              <div class="w-full px-3">
+                <label
+                  class="block capitalize tracking-wide text-gray-700 text-base sm:text-lg font-semibold mb-2"
+                >
+                  Title
+                </label>
+                <input
+                  x-model="title"
+                  @input.debounce.250ms="validateTitle"
+                  class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                  :class="titleError? 'border-red-500': ' border-gray-300'"
+                  type="text"
+                  placeholder="Enter todo title...."
+                />
+                <div x-show="titleError" class="mb-2">
+                  <span
+                    x-text="titleErrorMessage"
+                    class="text-red-500 text-sm sm:text-base"
+                  ></span>
+                </div>
+              </div>
+              <div class="w-full px-3">
+                <label
+                  class="block capitalize tracking-wide text-gray-700 text-base sm:text-lg font-semibold mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  x-model="description"
+                  @input.debounce.250ms="validateDescription"
+                  class="appearance-none block w-full h-36 resize-none text-gray-700 bg-slate-100 border rounded-md px-2 py-1 mb-2 focus:outline-none focus:border-gray-500"
+                  :class="descriptionError? 'border-red-500': ' border-gray-300'"
+                  type="text"
+                  placeholder="Enter description...."
+                ></textarea>
+                <div x-show="descriptionError" class="mb-2">
+                  <span
+                    x-text="descriptionErrorMessage"
+                    class="text-red-500 text-sm sm:text-base"
+                  ></span>
+                </div>
+              </div>
+              <div class="flex justify-between px-3 mb-2">
+                <button
+                  type="submit"
+                  class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                >
+                  Submit
+                </button>
+                <a
+                  href="#"
+                  @click="todoFormVisible=false; init(); clearInputs(); titleError=false; descriptionError=false"
+                  class="text-center bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </div>
