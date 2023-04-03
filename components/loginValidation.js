@@ -22,5 +22,8 @@ export default () => ({
     if (this.passwordError) {
       this.passwordErrorMessage = "Password must be at least 8 characters!";
     }
+    if (!this.usernameError && !this.passwordError) {
+      location.pathname = "main.html";
+    }
   },
 });
