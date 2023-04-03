@@ -1,9 +1,4 @@
-import Alpine from "alpinejs";
-import "../index.css";
-
-window.Alpine = Alpine;
-
-Alpine.data("createNewTodo", () => ({
+export default () => ({
   title: "",
   description: "",
   date: null,
@@ -57,6 +52,4 @@ Alpine.data("createNewTodo", () => ({
       this.clearInputs();
     }
   },
-}));
-
-Alpine.start();
+});

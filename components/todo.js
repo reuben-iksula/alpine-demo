@@ -1,9 +1,4 @@
-import Alpine from "alpinejs";
-import "../index.css";
-
-window.Alpine = Alpine;
-
-Alpine.data("todo", () => ({
+export default () => ({
   todoFormVisible: false,
   todoData: {},
   async init() {
@@ -17,6 +12,4 @@ Alpine.data("todo", () => ({
       console.log(error);
     }
   },
-}));
-
-Alpine.start();
+});
