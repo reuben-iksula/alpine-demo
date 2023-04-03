@@ -29,7 +29,7 @@
           Todo list
         </div>
         <div
-          @click="todoFormVisible=false; init()"
+          @click="clickedStickyWall"
           class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
           :class="!todoFormVisible && 'bg-cyan-500'"
         >
@@ -52,7 +52,7 @@
         </div>
 
         <div
-          @click="todoFormVisible=true"
+          @click="clickedCreateTodo"
           class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
           :class="todoFormVisible && 'bg-cyan-500'"
         >
@@ -104,85 +104,217 @@
         class="relative col-span-3 h-full overflow-scroll bg-rose-100 my-2"
       >
         <!--Sticky Wall  -->
-        <div x-show="!todoFormVisible" x-transition:enter>
-          <h2
-            class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400 mb-2"
-          >
-            Sticky Wall
-          </h2>
-          <!-- Spinner -->
-          <template x-if="isLoading">
-            <svg
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-              width="45"
-              height="45"
-              stroke="#000"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <style>
-                .spinner_V8m1 {
-                  transform-origin: center;
-                  animation: spinner_zKoa 2s linear infinite;
-                }
-                .spinner_V8m1 circle {
-                  stroke-linecap: round;
-                  animation: spinner_YpZS 1.5s ease-in-out infinite;
-                }
-                @keyframes spinner_zKoa {
-                  100% {
-                    transform: rotate(360deg);
-                  }
-                }
-                @keyframes spinner_YpZS {
-                  0% {
-                    stroke-dasharray: 0 150;
-                    stroke-dashoffset: 0;
-                  }
-                  47.5% {
-                    stroke-dasharray: 42 150;
-                    stroke-dashoffset: -16;
-                  }
-                  95%,
-                  100% {
-                    stroke-dasharray: 42 150;
-                    stroke-dashoffset: -59;
-                  }
-                }
-              </style>
-              <g class="spinner_V8m1">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="9.5"
-                  fill="none"
-                  stroke-width="3"
-                ></circle>
-              </g>
-            </svg>
-          </template>
+        <template x-if="todoListVisible">
           <div
-            class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(13rem,_1fr))] auto-rows-[13rem] gap-4 overflow-y-scroll p-4"
+            x-show="!todoFormVisible && !individualTodoVisible"
+            x-transition:enter
           >
-            <!-- Displaying all the Todos  -->
-
-            <template
-              x-for="todo in todoData"
-              x-effect="todoData"
-              :key="$id('todo')"
+            <h2
+              class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400 mb-2"
             >
-              <div
-                class="bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500 overflow-auto"
+              Sticky Wall
+            </h2>
+            <!-- Spinner -->
+            <template x-if="isLoading">
+              <svg
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                width="45"
+                height="45"
+                stroke="#000"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <h2
-                  x-text="todo.title"
-                  class="text-xl font-medium tracking-wide p-2 capitalize"
-                ></h2>
-                <p x-text="todo.description" class="text-base p-2"></p>
-              </div>
+                <style>
+                  .spinner_V8m1 {
+                    transform-origin: center;
+                    animation: spinner_zKoa 2s linear infinite;
+                  }
+                  .spinner_V8m1 circle {
+                    stroke-linecap: round;
+                    animation: spinner_YpZS 1.5s ease-in-out infinite;
+                  }
+                  @keyframes spinner_zKoa {
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+                  @keyframes spinner_YpZS {
+                    0% {
+                      stroke-dasharray: 0 150;
+                      stroke-dashoffset: 0;
+                    }
+                    47.5% {
+                      stroke-dasharray: 42 150;
+                      stroke-dashoffset: -16;
+                    }
+                    95%,
+                    100% {
+                      stroke-dasharray: 42 150;
+                      stroke-dashoffset: -59;
+                    }
+                  }
+                </style>
+                <g class="spinner_V8m1">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9.5"
+                    fill="none"
+                    stroke-width="3"
+                  ></circle>
+                </g>
+              </svg>
             </template>
+            <div
+              class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(13rem,_1fr))] auto-rows-[13rem] gap-4 overflow-y-scroll p-4"
+            >
+              <!-- Displaying all the Todos  -->
+
+              <template
+                x-for="todo in todoData"
+                x-effect="todoData"
+                :key="$id('todo')"
+              >
+                <div
+                  @click="()=>todoClickHandler(todo.id)"
+                  class="cursor-pointer bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500 overflow-auto"
+                >
+                  <h2
+                    x-text="todo.title"
+                    class="text-xl font-medium tracking-wide p-2 capitalize"
+                  ></h2>
+                  <p x-text="todo.description" class="text-base p-2"></p>
+                </div>
+              </template>
+            </div>
           </div>
-        </div>
+        </template>
+
+        <!-- Individual Todo -->
+        <!-- Spinner -->
+        <template x-if="isLoading">
+          <svg
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            width="45"
+            height="45"
+            stroke="#000"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <style>
+              .spinner_V8m1 {
+                transform-origin: center;
+                animation: spinner_zKoa 2s linear infinite;
+              }
+              .spinner_V8m1 circle {
+                stroke-linecap: round;
+                animation: spinner_YpZS 1.5s ease-in-out infinite;
+              }
+              @keyframes spinner_zKoa {
+                100% {
+                  transform: rotate(360deg);
+                }
+              }
+              @keyframes spinner_YpZS {
+                0% {
+                  stroke-dasharray: 0 150;
+                  stroke-dashoffset: 0;
+                }
+                47.5% {
+                  stroke-dasharray: 42 150;
+                  stroke-dashoffset: -16;
+                }
+                95%,
+                100% {
+                  stroke-dasharray: 42 150;
+                  stroke-dashoffset: -59;
+                }
+              }
+            </style>
+            <g class="spinner_V8m1">
+              <circle
+                cx="12"
+                cy="12"
+                r="9.5"
+                fill="none"
+                stroke-width="3"
+              ></circle>
+            </g>
+          </svg>
+        </template>
+
+        <!-- VIEW TODO -->
+        <template x-if="individualTodoVisible">
+          <div>
+            <h2
+              class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
+            >
+              View Todo
+            </h2>
+            <div
+              x-init="loadTodo"
+              class="bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500 overflow-auto"
+            >
+              <div>
+                <h2
+                  x-text="individualTodoData.title"
+                  class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
+                ></h2>
+                <a
+                  @click="clickedEditTodo"
+                  :href="`#?id=${individualTodoData.id}&edit=true`"
+                  >Edit todo</a
+                >
+                <a
+                  @click="clickedDeleteTodo"
+                  :href="`#?id=${individualTodoData.id}&delete=true`"
+                  >Delete todo</a
+                >
+              </div>
+              <p
+                x-text="individualTodoData.description"
+                class="text-base p-2"
+              ></p>
+            </div>
+            <div x-show="deleteTodo">Do you want to delete this todo?</div>
+            <!-- Back -->
+            <a
+              @click="editIndividualTodo=false; individualTodoVisible=false; todoListVisible=true;window.location.hash=''"
+              href="#"
+              >Back</a
+            >
+          </div>
+        </template>
+
+        <!-- EDIT TODO -->
+        <template x-if="editIndividualTodo">
+          <div>
+            <h2
+              class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
+            >
+              Edit Todo
+            </h2>
+            <div
+              class="bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500 overflow-auto"
+            >
+              <div>
+                <input
+                  :value="individualTodoData.title"
+                  class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
+                />
+                <a
+                  @click="editIndividualTodo=false; individualTodoVisible=true"
+                  :href="`#?id=${individualTodoData.id}`"
+                  >Back</a
+                >
+              </div>
+              <textarea
+                :value="individualTodoData.description"
+                class="text-base p-2"
+              ></textarea>
+            </div>
+          </div>
+        </template>
 
         <!--Create Todo form -->
         <div x-show="todoFormVisible" x-transition:enter>
@@ -248,7 +380,7 @@
                 </button>
                 <a
                   href="#"
-                  @click="todoFormVisible=false; init(); clearInputs(); titleError=false; descriptionError=false"
+                  @click="todoListVisible=true;todoFormVisible=false; init(); clearInputs(); titleError=false; descriptionError=false"
                   class="text-center bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                   >Cancel</a
                 >
