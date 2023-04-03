@@ -23,13 +23,9 @@ Alpine.data("loginValidation", () => ({
     this.passwordValidate();
     if (this.usernameError) {
       this.usernameErrorMessage = "Please enter a valid email";
-    } else {
-      this.usernameErrorMessage = "";
     }
     if (this.passwordError) {
       this.passwordErrorMessage = "Password must be at least 8 characters!";
-    } else {
-      this.passwordErrorMessage = "";
     }
   },
 }));
