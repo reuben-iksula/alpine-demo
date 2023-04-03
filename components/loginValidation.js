@@ -1,9 +1,4 @@
-import Alpine from "alpinejs";
-import "../index.css";
-
-window.Alpine = Alpine;
-
-Alpine.data("loginValidation", () => ({
+export default () => ({
   username: "",
   password: "",
   usernameError: false,
@@ -28,6 +23,4 @@ Alpine.data("loginValidation", () => ({
       this.passwordErrorMessage = "Password must be at least 8 characters!";
     }
   },
-}));
-
-Alpine.start();
+});
