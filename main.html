@@ -12,6 +12,7 @@
       }
     </style>
   </head>
+
   <body
     x-data
     x-cloak
@@ -95,8 +96,8 @@
                 d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
               />
             </svg>
-            Sign Out</a
-          >
+            Sign Out
+          </a>
         </div>
       </aside>
 
@@ -128,24 +129,29 @@
                     transform-origin: center;
                     animation: spinner_zKoa 2s linear infinite;
                   }
+
                   .spinner_V8m1 circle {
                     stroke-linecap: round;
                     animation: spinner_YpZS 1.5s ease-in-out infinite;
                   }
+
                   @keyframes spinner_zKoa {
                     100% {
                       transform: rotate(360deg);
                     }
                   }
+
                   @keyframes spinner_YpZS {
                     0% {
                       stroke-dasharray: 0 150;
                       stroke-dashoffset: 0;
                     }
+
                     47.5% {
                       stroke-dasharray: 42 150;
                       stroke-dashoffset: -16;
                     }
+
                     95%,
                     100% {
                       stroke-dasharray: 42 150;
@@ -205,24 +211,29 @@
                 transform-origin: center;
                 animation: spinner_zKoa 2s linear infinite;
               }
+
               .spinner_V8m1 circle {
                 stroke-linecap: round;
                 animation: spinner_YpZS 1.5s ease-in-out infinite;
               }
+
               @keyframes spinner_zKoa {
                 100% {
                   transform: rotate(360deg);
                 }
               }
+
               @keyframes spinner_YpZS {
                 0% {
                   stroke-dasharray: 0 150;
                   stroke-dashoffset: 0;
                 }
+
                 47.5% {
                   stroke-dasharray: 42 150;
                   stroke-dashoffset: -16;
                 }
+
                 95%,
                 100% {
                   stroke-dasharray: 42 150;
@@ -281,7 +292,7 @@
         </template>
 
         <!-- EDIT TODO -->
-        <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
+        <!-- <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
           <div>
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
@@ -304,6 +315,66 @@
               ></textarea>
             </div>
           </div>
+        </template> -->
+
+        <!-- Edit Todo  -->
+
+        <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
+          <main>
+            <h2
+              class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
+            >
+              Edit Your Todo!
+            </h2>
+            <div class="w-full h-full p-4">
+              <form
+                class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
+              >
+                <div class="w-full px-3">
+                  <label
+                    class="block capitalize tracking-wide text-gray-700 text-base sm:text-lg font-semibold mb-2"
+                  >
+                    Title
+                  </label>
+                  <input
+                    :value="individualTodoData.title"
+                    class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                    b
+                  />
+                </div>
+
+                <div class="w-full px-3">
+                  <label
+                    class="block capitalize tracking-wide text-gray-700 text-base sm:text-lg font-semibold mb-2"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    :value="individualTodoData.description"
+                    @input.debounce.250ms="validateDescription"
+                    class="appearance-none block w-full h-36 resize-none text-gray-700 bg-slate-100 border rounded-md px-2 py-1 mb-2 focus:outline-none focus:border-gray-500"
+                    :class="descriptionError? 'border-red-500': ' border-gray-300'"
+                    type="text"
+                    placeholder="Enter description...."
+                  ></textarea>
+                </div>
+                <div class="flex justify-between px-3 mb-2">
+                  <button
+                    type="submit"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                  >
+                    Update
+                  </button>
+
+                  <a
+                    href="#sticky-wall"
+                    class="text-center bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                    >Cancel</a
+                  >
+                </div>
+              </form>
+            </div>
+          </main>
         </template>
 
         <!--Create Todo form -->
@@ -371,7 +442,6 @@
                 <a
                   href="#sticky-wall"
                   class="text-center bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
-                  @click="titleError=null ;descriptionError=null"
                   >Cancel</a
                 >
               </div>
