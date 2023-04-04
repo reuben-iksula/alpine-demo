@@ -9,13 +9,20 @@ export default () => ({
   usernameValidate() {
     this.usernameError = !this.username.includes("@");
   },
+
   passwordValidate() {
     this.passwordError = this.password.length < 8;
+  },
+
+  clearInputs() {
+    this.username = "";
+    this.password = "";
   },
 
   submitHandler() {
     this.usernameValidate();
     this.passwordValidate();
+    this.clearInputs();
     if (this.usernameError) {
       this.usernameErrorMessage = "Please enter a valid email";
     }

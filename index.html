@@ -48,19 +48,18 @@
           </h2>
 
           <!-- form section -->
-          <form x-on:submit.prevent="submitHandler">
+          <form x-on:submit.prevent="submitHandler; clearInputs">
             <label
               class="font-medium text-gray-800 tracking-wider text-base sm:text-lg"
             >
               Username
             </label>
             <input
-              type="email"
+              type="text"
               class="w-[98%] mt-2 mb-2 sm:mb-4 px-2 py-1 rounded-md border-[1px] text-sm sm:text-base text-gray-700"
               :class="usernameError? 'border-red-500': ' border-gray-300'"
               placeholder="xyz@gmail.com"
               x-model="username"
-              oninvalid="setCustomValidity(' ')"
               @keyup="usernameValidate"
             />
             <div x-show="usernameError" class="-mt-2 mb-2">
