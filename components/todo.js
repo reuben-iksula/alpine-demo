@@ -1,9 +1,5 @@
 export default () => ({
-  todoFormVisible: false,
-  individualTodoVisible: false,
-  editIndividualTodo: false,
-  deleteTodo: false,
-  todoListVisible: true,
+  page: location.hash,
   todoData: {},
   individualTodoData: {},
   isLoading: null,
@@ -23,45 +19,8 @@ export default () => ({
     }
   },
 
-  clickedStickyWall() {
-    this.todoListVisible = true;
-    this.todoFormVisible = false;
-    this.individualTodoVisible = false;
-    this.editIndividualTodo = false;
-    this.deleteTodo = false;
-    location.hash = "";
-    this.init();
-  },
-  clickedCreateTodo() {
-    this.todoListVisible = false;
-    this.todoFormVisible = true;
-    this.individualTodoVisible = false;
-    this.editIndividualTodo = false;
-    this.deleteTodo = false;
-    location.hash = "";
-  },
-  clickedEditTodo() {
-    this.todoListVisible = false;
-    this.todoFormVisible = false;
-    this.editIndividualTodo = true;
-    this.individualTodoVisible = false;
-    this.todoListVisible = false;
-    this.deleteTodo = false;
-  },
-
-  clickedDeleteTodo() {
-    this.individualTodoVisible = true;
-    this.todoListVisible = false;
-    this.deleteTodo = true;
-  },
-
   todoClickHandler(todoId) {
-    location.hash = `?id=${todoId}`;
-    this.individualTodoVisible = true;
-    this.deleteTodo = false;
-    this.editIndividualTodo = false;
-    this.todoFormVisible = false;
-    this.todoListVisible = false;
+    location.hash = `todo?id=${todoId}`;
   },
 
   addIdInData(data) {
@@ -74,7 +33,7 @@ export default () => ({
 
   async loadTodo() {
     const todoParams = Object.fromEntries(new URLSearchParams(location.hash));
-    todoParams["id"] = todoParams["#?id"];
+    todoParams["id"] = todoParams["#todo?id"];
 
     try {
       if (todoParams.id) {
