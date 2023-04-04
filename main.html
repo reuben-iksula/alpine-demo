@@ -19,6 +19,8 @@
   >
     <div
       x-data="todo"
+      x-on:hashchange.window="page=location.hash"
+      x-effect="console.log(page)"
       class="w-full m-4 p-4 max-w-6xl min-w-[35rem] h-[35rem] bg-white rounded-xl shadow-2xl grid grid-cols-4 gap-4"
     >
       <!-- Sidebar -->
@@ -29,9 +31,9 @@
           Todo list
         </div>
         <div
-          @click="clickedStickyWall"
+          @click="location.hash='sticky-wall'"
           class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
-          :class="!todoFormVisible && 'bg-cyan-500'"
+          :class="page==='#sticky-wall' && 'bg-cyan-500'"
         >
           <!-- Sticky wall icon -->
           <svg
@@ -52,9 +54,9 @@
         </div>
 
         <div
-          @click="clickedCreateTodo"
+          @click="location.hash='create-todo'"
           class="inline-flex items-center w-full p-2 text-white cursor-pointer hover:text-slate-700 hover:bg-cyan-400 text-sm"
-          :class="todoFormVisible && 'bg-cyan-500'"
+          :class="page==='#create-todo' && 'bg-cyan-500'"
         >
           <!-- Create todo icon -->
           <svg
@@ -104,11 +106,8 @@
         class="relative col-span-3 h-full overflow-scroll bg-rose-100 my-2"
       >
         <!--Sticky Wall  -->
-        <template x-if="todoListVisible">
-          <div
-            x-show="!todoFormVisible && !individualTodoVisible"
-            x-transition:enter
-          >
+        <div x-show="page==='#sticky-wall'" x-transition:enter>
+          <div>
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400 mb-2"
             >
@@ -188,7 +187,7 @@
               </template>
             </div>
           </div>
-        </template>
+        </div>
 
         <!-- Individual Todo -->
         <!-- Spinner -->
@@ -244,7 +243,7 @@
         </template>
 
         <!-- VIEW TODO -->
-        <template x-if="individualTodoVisible">
+        <template x-if="/^#todo\?id=[a-zA-Z0-9\-_;]+$/.test(page)">
           <div>
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
@@ -260,14 +259,10 @@
                   x-text="individualTodoData.title"
                   class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
                 ></h2>
-                <a
-                  @click="clickedEditTodo"
-                  :href="`#?id=${individualTodoData.id}&edit=true`"
+                <a :href="`#todo?id=${individualTodoData.id}&edit=true`"
                   >Edit todo</a
                 >
-                <a
-                  @click="clickedDeleteTodo"
-                  :href="`#?id=${individualTodoData.id}&delete=true`"
+                <a :href="`#todo?id=${individualTodoData.id}&delete=true`"
                   >Delete todo</a
                 >
               </div>
@@ -276,18 +271,17 @@
                 class="text-base p-2"
               ></p>
             </div>
-            <div x-show="deleteTodo">Do you want to delete this todo?</div>
             <!-- Back -->
-            <a
-              @click="editIndividualTodo=false; individualTodoVisible=false; todoListVisible=true;window.location.hash=''"
-              href="#"
-              >Back</a
-            >
+            <a href="#sticky-wall">Back</a>
           </div>
         </template>
 
+        <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&delete=true/.test(page)">
+          <div>Do you want to delete this todo?</div>
+        </template>
+
         <!-- EDIT TODO -->
-        <template x-if="editIndividualTodo">
+        <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
           <div>
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
@@ -302,11 +296,7 @@
                   :value="individualTodoData.title"
                   class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
                 />
-                <a
-                  @click="editIndividualTodo=false; individualTodoVisible=true"
-                  :href="`#?id=${individualTodoData.id}`"
-                  >Back</a
-                >
+                <a :href="`#todo?id=${individualTodoData.id}`">Back</a>
               </div>
               <textarea
                 :value="individualTodoData.description"
@@ -317,7 +307,7 @@
         </template>
 
         <!--Create Todo form -->
-        <div x-show="todoFormVisible" x-transition:enter>
+        <div x-show="page==='#create-todo'" x-transition:enter>
           <h2
             class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
           >
@@ -379,8 +369,7 @@
                   Submit
                 </button>
                 <a
-                  href="#"
-                  @click="todoListVisible=true;todoFormVisible=false; init(); clearInputs(); titleError=false; descriptionError=false"
+                  href="#sticky-wall"
                   class="text-center bg-gradient-to-r from-emerald-500 to-green-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                   >Cancel</a
                 >
