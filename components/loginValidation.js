@@ -1,8 +1,8 @@
 export default () => ({
   username: "",
   password: "",
-  usernameError: false,
-  passwordError: false,
+  usernameError: null,
+  passwordError: null,
   passwordErrorMessage: "",
   usernameErrorMessage: "",
 

@@ -2,8 +2,8 @@ export default () => ({
   title: "",
   description: "",
   date: null,
-  titleError: false,
-  descriptionError: false,
+  titleError: null,
+  descriptionError: null,
   titleErrorMessage: "Title cannot be empty",
   descriptionErrorMessage: "Description cannot be empty",
 
