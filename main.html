@@ -276,11 +276,11 @@
                 <div>
                   <h2
                     x-text="individualTodoData.title"
-                    class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
+                    class="text-xl inline-block font-medium tracking-wide p-2 capitalize max-h-[8rem] overflow-auto"
                   ></h2>
                   <p
                     x-text="individualTodoData.description"
-                    class="text-base p-2"
+                    class="text-base p-2 h-[8rem] overflow-auto"
                   ></p>
                 </div>
 
@@ -335,12 +335,12 @@
                   >
                     Title
                   </label>
-                  <input
+                  <textarea
                     x-init="editTitle=individualTodoData.title"
                     @input.debounce.250ms="()=>editTitleValidate(individualTodoData.title)"
                     x-model="editTitle"
-                    class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
-                  />
+                    class="resize-none appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                  ></textarea>
                   <div x-show="editTitleError" class="mb-2">
                     <span
                       x-text="editTitleErrorMessage"
@@ -409,14 +409,14 @@
                 >
                   Title
                 </label>
-                <input
+                <textarea
                   x-model="title"
                   @input.debounce.250ms="validateTitle"
-                  class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                  class="resize-none appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
                   :class="titleError? 'border-red-500': ' border-gray-300'"
                   type="text"
                   placeholder="Enter todo title...."
-                />
+                ></textarea>
                 <div x-show="titleError" class="mb-2">
                   <span
                     x-text="titleErrorMessage"
