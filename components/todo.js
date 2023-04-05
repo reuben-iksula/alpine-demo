@@ -34,18 +34,18 @@ export default () => ({
   async deleteDataInFirebase() {
     const todoParams = Object.fromEntries(new URLSearchParams(location.hash));
     todoParams["id"] = todoParams["#todo?id"];
-    const newData = this.todoData.filter((data) => data.id !== todoParams.id);
     try {
-      await fetch(
-        "https://todo-collab-e32d9-default-rtdb.firebaseio.com/todo.json",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newData),
-        }
-      );
+      if (todoParams.id) {
+        await fetch(
+          `https://todo-collab-e32d9-default-rtdb.firebaseio.com/todo/${todoParams.id}.json`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
       await this.init();
     } catch (err) {
       console.log(err);
