@@ -18,6 +18,8 @@ export default () => ({
   clearInputs() {
     this.title = "";
     this.description = "";
+    this.titleError = null;
+    this.descriptionError = null;
   },
 
   async postDataToFirebase(data) {
@@ -49,6 +51,7 @@ export default () => ({
         description: this.description,
         createdAt: this.date,
       });
+      await this.init();
       this.clearInputs();
     }
   },
