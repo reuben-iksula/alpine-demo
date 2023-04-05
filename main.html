@@ -262,11 +262,12 @@
             >
               View Todo
               <!-- Back -->
-            <a href="#sticky-wall"
-            class="text-center bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] text-white text-sm sm:text-sm tracking-wider float-right "
-            >Back</a>
+              <a
+                href="#sticky-wall"
+                class="text-center bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] text-white text-sm sm:text-sm tracking-wider float-right"
+                >Back</a
+              >
             </h2>
-            
 
             <div
               x-init="loadTodo"
@@ -278,18 +279,20 @@
                   class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
                 ></h2>
                 <p
-                x-text="individualTodoData.description"
-                class="text-base p-2"
-              ></p>
+                  x-text="individualTodoData.description"
+                  class="text-base p-2"
+                ></p>
               </div>
-              
+
               <div class="flex justify-between px-3 mb-2">
-                <a :href="`#todo?id=${individualTodoData.id}&edit=true`"
+                <a
+                  :href="`#todo?id=${individualTodoData.id}&edit=true`"
                   class="text-center bg-cyan-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                 >
-                Edit todo
+                  Edit todo
                 </a>
-                <a :href="`#todo?id=${individualTodoData.id}&delete=true`"
+                <a
+                  :href="`#todo?id=${individualTodoData.id}&delete=true`"
                   class="text-center bg-rose-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                   >Delete todo</a
                 >
@@ -313,7 +316,7 @@
             </h2>
             <div class="w-full h-full p-4">
               <form
-                @submit.prevent="submitHandler"
+                @submit.prevent="()=>submitHandler(individualTodoData)"
                 class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
               >
                 <div class="w-full px-3">

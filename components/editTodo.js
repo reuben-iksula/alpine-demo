@@ -8,6 +8,8 @@ export default () => ({
   editTitleErrorMessage: "",
   editDescriptionErrorMessage: "",
 
+  initialTitle: "",
+
   isLoading: null,
 
   editTitleValidate(initialTitle) {
@@ -62,9 +64,9 @@ export default () => ({
     }
   },
 
-  async submitHandler() {
-    this.editTitleValidate();
-    this.editDescriptionValidate();
+  async submitHandler(individualToData) {
+    this.editTitleValidate(individualToData.title);
+    this.editDescriptionValidate(individualToData.description);
     if (!this.editTitleError && !this.editDescriptionError) {
       await this.updateDataInFirebase({
         createdAt: new Date(),
