@@ -102,7 +102,6 @@
       </aside>
 
       <!-- Main Section -->
-
       <section
         class="relative col-span-3 h-full overflow-scroll bg-rose-100 my-2"
       >
@@ -254,7 +253,7 @@
           </svg>
         </template>
 
-        <!-- VIEW TODO -->
+        <!-- View Todo -->
         <template x-if="/^#todo\?id=[a-zA-Z0-9\-_;]+$/.test(page)">
           <div>
             <h2
@@ -301,12 +300,30 @@
           </div>
         </template>
 
+        <!-- Delete a Todo -->
         <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&delete=true/.test(page)">
-          <div>Do you want to delete this todo?</div>
+          <div class="fiex text-center mt-44 p-6">
+            <h2 class="font-semibold text-lg tracking-wide">
+              Are you sure, you want to delete this todo?
+            </h2>
+            <div class="mt-8 mx-auto">
+              <button
+                class="text-center bg-rose-500 rounded-lg py-1 px-4 mr-6 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                @click="deleteDataInFirebase()"
+              >
+                Yes
+              </button>
+              <a
+                class="text-center bg-cyan-500 rounded-lg py-2 px-4 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                href="#sticky-wall"
+              >
+                No
+              </a>
+            </div>
+          </div>
         </template>
 
         <!-- Edit Todo  -->
-
         <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
           <section x-data="editTodo">
             <h2
