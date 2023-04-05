@@ -171,6 +171,7 @@
               </svg>
             </template>
             <div
+              @todo-updated.window="init"
               class="h-[90%] col-span-2 grid grid-cols-[repeat(auto-fit,_minmax(13rem,_1fr))] auto-rows-[13rem] gap-4 overflow-y-scroll p-4"
             >
               <!-- Displaying all the Todos  -->
@@ -261,11 +262,12 @@
             >
               View Todo
               <!-- Back -->
-            <a href="#sticky-wall"
-            class="text-center bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] text-white text-sm sm:text-sm tracking-wider float-right "
-            >Back</a>
+              <a
+                href="#sticky-wall"
+                class="text-center bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] text-white text-sm sm:text-sm tracking-wider float-right"
+                >Back</a
+              >
             </h2>
-            
 
             <div
               x-init="loadTodo"
@@ -277,18 +279,20 @@
                   class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
                 ></h2>
                 <p
-                x-text="individualTodoData.description"
-                class="text-base p-2"
-              ></p>
+                  x-text="individualTodoData.description"
+                  class="text-base p-2"
+                ></p>
               </div>
-              
+
               <div class="flex justify-between px-3 mb-2">
-                <a :href="`#todo?id=${individualTodoData.id}&edit=true`"
+                <a
+                  :href="`#todo?id=${individualTodoData.id}&edit=true`"
                   class="text-center bg-cyan-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                 >
-                Edit todo
+                  Edit todo
                 </a>
-                <a :href="`#todo?id=${individualTodoData.id}&delete=true`"
+                <a
+                  :href="`#todo?id=${individualTodoData.id}&delete=true`"
                   class="text-center bg-rose-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
                   >Delete todo</a
                 >
@@ -301,36 +305,10 @@
           <div>Do you want to delete this todo?</div>
         </template>
 
-        <!-- EDIT TODO -->
-        <!-- <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
-          <div>
-            <h2
-              class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
-            >
-              Edit Todo
-            </h2>
-            <div
-              class="bg-purple-300 p-2 rounded-lg shadow-md shadow-gray-500 overflow-auto"
-            >
-              <div>
-                <input
-                  :value="individualTodoData.title"
-                  class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
-                />
-                <a :href="`#todo?id=${individualTodoData.id}`">Back</a>
-              </div>
-              <textarea
-                :value="individualTodoData.description"
-                class="text-base p-2"
-              ></textarea>
-            </div>
-          </div>
-        </template> -->
-
         <!-- Edit Todo  -->
 
         <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
-          <main>
+          <section x-data="editTodo">
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
             >
@@ -338,6 +316,7 @@
             </h2>
             <div class="w-full h-full p-4">
               <form
+                @submit.prevent="()=>submitHandler(individualTodoData)"
                 class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
               >
                 <div class="w-full px-3">
@@ -347,10 +326,17 @@
                     Title
                   </label>
                   <input
-                    :value="individualTodoData.title"
+                    x-init="editTitle=individualTodoData.title"
+                    @input.debounce.250ms="()=>editTitleValidate(individualTodoData.title)"
+                    x-model="editTitle"
                     class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
-                    b
                   />
+                  <div x-show="editTitleError" class="mb-2">
+                    <span
+                      x-text="editTitleErrorMessage"
+                      class="text-red-500 text-sm sm:text-base"
+                    ></span>
+                  </div>
                 </div>
 
                 <div class="w-full px-3">
@@ -360,13 +346,20 @@
                     Description
                   </label>
                   <textarea
-                    :value="individualTodoData.description"
-                    @input.debounce.250ms="validateDescription"
+                    x-init="editDescription=individualTodoData.description"
+                    x-model="editDescription"
+                    @input.debounce.250ms="()=>editDescriptionValidate(individualTodoData.description)"
                     class="appearance-none block w-full h-36 resize-none text-gray-700 bg-slate-100 border rounded-md px-2 py-1 mb-2 focus:outline-none focus:border-gray-500"
-                    :class="descriptionError? 'border-red-500': ' border-gray-300'"
+                    :class="editDescriptionError? 'border-red-500': ' border-gray-300'"
                     type="text"
                     placeholder="Enter description...."
                   ></textarea>
+                  <div x-show="editDescriptionError" class="mb-2">
+                    <span
+                      x-text="editDescriptionErrorMessage"
+                      class="text-red-500 text-sm sm:text-base"
+                    ></span>
+                  </div>
                 </div>
                 <div class="flex justify-between px-3 mb-2">
                   <button
@@ -384,7 +377,7 @@
                 </div>
               </form>
             </div>
-          </main>
+          </section>
         </template>
 
         <!--Create Todo form -->
