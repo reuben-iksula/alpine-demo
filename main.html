@@ -255,7 +255,7 @@
 
         <!-- View Todo -->
         <template x-if="/^#todo\?id=[a-zA-Z0-9\-_;]+$/.test(page)">
-          <div>
+          <div class="h-[90%]">
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
             >
@@ -267,34 +267,35 @@
                 >Back</a
               >
             </h2>
+            <div class="h-full w-full grid place-items-center">
+              <div
+                x-init="loadTodo"
+                class="lg:max-w-lg md:max-w-md sm:max-w-sm max-w-[16rem] w-full bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400 mt-4"
+              >
+                <div>
+                  <h2
+                    x-text="individualTodoData.title"
+                    class="text-xl inline-block font-medium tracking-wide p-2 capitalize max-h-[8rem] overflow-auto"
+                  ></h2>
+                  <p
+                    x-text="individualTodoData.description"
+                    class="text-base p-2 h-[8rem] overflow-auto"
+                  ></p>
+                </div>
 
-            <div
-              x-init="loadTodo"
-              class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400 mt-4"
-            >
-              <div>
-                <h2
-                  x-text="individualTodoData.title"
-                  class="text-xl inline-block font-medium tracking-wide p-2 capitalize"
-                ></h2>
-                <p
-                  x-text="individualTodoData.description"
-                  class="text-base p-2"
-                ></p>
-              </div>
-
-              <div class="flex justify-between px-3 mb-2">
-                <a
-                  :href="`#todo?id=${individualTodoData.id}&edit=true`"
-                  class="text-center bg-cyan-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
-                >
-                  Edit todo
-                </a>
-                <a
-                  :href="`#todo?id=${individualTodoData.id}&delete=true`"
-                  class="text-center bg-rose-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
-                  >Delete todo</a
-                >
+                <div class="flex justify-between px-3 mb-2">
+                  <a
+                    :href="`#todo?id=${individualTodoData.id}&edit=true`"
+                    class="text-center bg-cyan-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                  >
+                    Edit todo
+                  </a>
+                  <a
+                    :href="`#todo?id=${individualTodoData.id}&delete=true`"
+                    class="text-center bg-rose-500 rounded-3xl p-1 w-28 sm:w-[9rem] mt-2 text-white font-semibold text-sm sm:text-lg tracking-wider"
+                    >Delete todo</a
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -325,16 +326,25 @@
 
         <!-- Edit Todo  -->
         <template x-if="/#todo\?id=[a-zA-Z0-9\-_;]+&edit=true/.test(page)">
-          <section x-data="editTodo">
+          <section class="h-[90%]" x-data="editTodo">
             <h2
               class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
             >
               Edit Your Todo!
+
+              <a
+                href="#sticky-wall"
+                @click="()=>history.back()"
+                class="text-center bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl p-1 w-28 sm:w-[9rem] text-white text-sm sm:text-sm tracking-wider float-right"
+                >Back</a
+              >
             </h2>
-            <div class="w-full h-full p-4">
+            <!-- Back -->
+
+            <div class="w-full h-full grid place-items-center p-4">
               <form
                 @submit.prevent="()=>submitHandler(individualTodoData)"
-                class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
+                class="lg:max-w-lg md:max-w-md sm:max-w-sm max-w-[16rem] w-full bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
               >
                 <div class="w-full px-3">
                   <label
@@ -342,12 +352,12 @@
                   >
                     Title
                   </label>
-                  <input
+                  <textarea
                     x-init="editTitle=individualTodoData.title"
                     @input.debounce.250ms="()=>editTitleValidate(individualTodoData.title)"
                     x-model="editTitle"
-                    class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
-                  />
+                    class="resize-none appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                  ></textarea>
                   <div x-show="editTitleError" class="mb-2">
                     <span
                       x-text="editTitleErrorMessage"
@@ -398,17 +408,17 @@
         </template>
 
         <!--Create Todo form -->
-        <div x-show="page==='#create-todo'" x-transition:enter>
+        <div class="h-[90%]" x-show="page==='#create-todo'" x-transition:enter>
           <h2
             class="text-xl sm:text-2xl bg-white font-semibold tracking-wide capitalize pb-2 shadow-md shadow-gray-400"
           >
             Create your Todo!
           </h2>
-          <div class="w-full h-full p-4">
+          <div class="w-full h-full grid place-items-center p-4">
             <form
               x-data="createNewTodo"
               x-on:submit.prevent="submitHandler"
-              class="w-1/2 bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
+              class="lg:max-w-lg md:max-w-md sm:max-w-sm max-w-[16rem] w-full bg-white rounded-lg py-2 mx-auto shadow-md shadow-gray-400"
             >
               <div class="w-full px-3">
                 <label
@@ -416,14 +426,14 @@
                 >
                   Title
                 </label>
-                <input
+                <textarea
                   x-model="title"
                   @input.debounce.250ms="validateTitle"
-                  class="appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
+                  class="resize-none appearance-none block w-full bg-slate-100 text-gray-700 border rounded-md px-2 py-1 mb-2 text-sm sm:text-base focus:outline-none focus:border-gray-500"
                   :class="titleError? 'border-red-500': ' border-gray-300'"
                   type="text"
                   placeholder="Enter todo title...."
-                />
+                ></textarea>
                 <div x-show="titleError" class="mb-2">
                   <span
                     x-text="titleErrorMessage"
