@@ -29,8 +29,8 @@
         x-data="{
         clickedMenu:false
       }"
-        class="relative z-10 bg-slate-700 min-w-[5rem] transition-['min-width'] duration-300"
-        :class="clickedMenu ? 'min-w-[15rem] md:min-w-fit z-index:10': '' "
+        class="relative z-10 bg-slate-700 transition-['min-width'] duration-300"
+        :class="clickedMenu ? 'min-w-[15rem] md:min-w-fit z-10':'min-w-[5rem]'"
       >
         <svg
           @click="clickedMenu=!clickedMenu"
