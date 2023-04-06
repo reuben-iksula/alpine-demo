@@ -30,7 +30,7 @@
         clickedMenu:false
       }"
         class="relative z-10 bg-slate-700 min-w-[5rem] transition-['min-width'] duration-300"
-        :style="clickedMenu ? 'min-width:15rem;z-index:10;':''"
+        :class="clickedMenu ? 'min-w-[15rem] md:min-w-fit z-index:10': '' "
       >
         <svg
           @click="clickedMenu=!clickedMenu"
